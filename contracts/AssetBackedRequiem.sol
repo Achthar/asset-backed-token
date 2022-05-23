@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.14;
 
-import "./proxy/utils/UUPSUpgradeable.sol";
 import "./proxy/utils/OwnableUpgradeable.sol";
 import "./proxy/ERC20/ERC20PermitUpgradeable.sol";
 import "./proxy/ERC20/ERC20BurnableUpgradeable.sol";
 
 /**
- *  Governance token for requiem.finance
+ *  Main token for requiem.finance
  *  - Flexible minting allowed for flexibility
  *  - Total supply cap for better control
  *  - Controllable minters with indivitual caps
@@ -15,10 +14,9 @@ import "./proxy/ERC20/ERC20BurnableUpgradeable.sol";
 contract AssetBackedRequiem is
   ERC20PermitUpgradeable,
   ERC20BurnableUpgradeable,
-  UUPSUpgradeable,
   OwnableUpgradeable
 {
-  uint256 public MAX_TOTAL_SUPPLY = 10_000_000 ether; // 10mn
+  uint256 public MAX_TOTAL_SUPPLY;
 
   mapping(address => uint256) public minters; // minter's address => minter's max cap
   mapping(address => uint256) public minters_minted;
@@ -34,12 +32,14 @@ contract AssetBackedRequiem is
     _;
   }
 
-  function name() public pure override returns (string memory) {
-    return "Asset Backed Requiem Token";
-  }
-
-  function symbol() public pure override returns (string memory) {
-    return "abREQ";
+  function initialize(
+    string memory name_,
+    string memory symbol_,
+    uint256 _max_total_supply
+  ) public initializer {
+    __ERC20_init(name_, symbol_);
+    __Ownable_init();
+    MAX_TOTAL_SUPPLY = _max_total_supply;
   }
 
   /* ========== MUTATIVE FUNCTIONS ========== */
@@ -93,10 +93,4 @@ contract AssetBackedRequiem is
     MAX_TOTAL_SUPPLY = _newCap;
     emit MaxTotalSupplyUpdated(_newCap);
   }
-
-  function _authorizeUpgrade(address newImplementation)
-    internal
-    override
-    onlyOwner
-  {}
 }
