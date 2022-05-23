@@ -39,6 +39,9 @@ contract AssetBackedRequiem is
   ) public initializer {
     __ERC20_init(name_, symbol_);
     __Ownable_init();
+    __Context_init();
+    __ERC20Burnable_init();
+    __ERC20Permit_init(name_);
     MAX_TOTAL_SUPPLY = _max_total_supply;
   }
 

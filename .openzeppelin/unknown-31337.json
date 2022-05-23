@@ -2,7 +2,7 @@
   "manifestVersion": "3.2",
   "admin": {
     "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-    "txHash": "0xcc154b4bac8d762d6cb35aa98c222d159cb635244389c74db20ff9eb45a5eb19"
+    "txHash": "0x21de2af8ba4c6b818f867d09507bee6c67b1813d47efbbc8bf822bb4ef0d7c8f"
   },
   "proxies": [
     {
@@ -17,14 +17,14 @@
     },
     {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x8f0e6d67420eece6fc1dfa1af90c73861ad0b17fcc8b947d6dfbb019efad1b59",
+      "txHash": "0x34ffcbcbe037ff024fc9bce18f386b5a9fe6b82dfa93d17fc6e0840ed90dfb16",
       "kind": "transparent"
     }
   ],
   "impls": {
-    "d9e497ea3389c114126a8dae54bbe676b21a5f49fca6c17916850877c83eca0c": {
+    "214fbd138dc4e68ad19b9ece34828363a7584ef5382a96b62d35487b39474894": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0xc62e50843b137b6de2b2ce746ec64bf91c40a84b9ad646a5206547a7efddd55e",
+      "txHash": "0xe77c2cbc7033f7c00ff83ea442c8f41da5884dd46d8e801ff80bf4afa2e743a1",
       "layout": {
         "storage": [
           {
@@ -128,7 +128,7 @@
             "label": "_nonces",
             "offset": 0,
             "slot": "153",
-            "type": "t_mapping(t_address,t_struct(Counter)1521_storage)",
+            "type": "t_mapping(t_address,t_struct(Counter)1531_storage)",
             "contract": "ERC20PermitUpgradeable",
             "src": "contracts/proxy/ERC20/ERC20PermitUpgradeable.sol:33"
           },
@@ -227,7 +227,7 @@
             "label": "mapping(address => mapping(address => uint256))",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_address,t_struct(Counter)1521_storage)": {
+          "t_mapping(t_address,t_struct(Counter)1531_storage)": {
             "label": "mapping(address => struct CountersUpgradeable.Counter)",
             "numberOfBytes": "32"
           },
@@ -239,7 +239,7 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(Counter)1521_storage": {
+          "t_struct(Counter)1531_storage": {
             "label": "struct CountersUpgradeable.Counter",
             "members": [
               {
