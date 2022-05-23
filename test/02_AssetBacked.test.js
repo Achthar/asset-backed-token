@@ -3,7 +3,7 @@
 const { assert, expect } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const { parseUnits } = require('ethers/lib/utils')
-const { parse } = require('path')
+const { expectRevert } = require('@openzeppelin/test-helpers')
 
 describe('AssetBackedToken Test', async function () {
   let assetBackedToken
@@ -13,14 +13,16 @@ describe('AssetBackedToken Test', async function () {
     const accounts = await ethers.getSigners()
     contractOwner = accounts[0]
     otherAccount = accounts[1]
+    recipient = accounts[2]
+    anotherAccount = accounts[3]
     const AssetBackedToken = await ethers.getContractFactory('AssetBackedRequiem')
 
     proxy = await upgrades.deployProxy(AssetBackedToken, ["Test Token", "TT", parseUnits('1000000', 18)]);
     await proxy.deployed();
 
     assetBackedToken = await ethers.getContractAt('AssetBackedRequiem', proxy.address)
-
   })
+
 
   it('should provide correct ERC20 data', async () => {
     const name = await assetBackedToken.name()
@@ -32,7 +34,7 @@ describe('AssetBackedToken Test', async function () {
   })
 
   it('minting is restricted user-wise', async () => {
-    await expect(assetBackedToken.connect(otherAccount).mint(otherAccount.address, '1000')).to.be.revertedWith( "Only minter can interact")
+    await expectRevert(assetBackedToken.connect(otherAccount).mint(otherAccount.address, '1000'), "Only minter can interact")
   })
 
 
@@ -43,15 +45,15 @@ describe('AssetBackedToken Test', async function () {
     const amnt = await assetBackedToken.balanceOf(contractOwner.address)
 
     assert.equal(amnt.toString(), '10000')
-    await expect(assetBackedToken.mint(contractOwner.address, '1')).to.be.revertedWith( "Minting amount exceeds minter cap")
- 
- 
+    await expectRevert(assetBackedToken.mint(contractOwner.address, '1'), "Minting amount exceeds minter cap")
+
+
   })
 
   it('minting is restricted supply-wise', async () => {
-    await assetBackedToken.setMinter(contractOwner.address, parseUnits('1000001',18))
+    await assetBackedToken.setMinter(contractOwner.address, parseUnits('1000001', 18))
 
-    await expect(assetBackedToken.mint(otherAccount.address, parseUnits('1000001',18))).to.be.revertedWith( "Minting amount exceeds minter cap")
+    await expectRevert(assetBackedToken.mint(otherAccount.address, parseUnits('1000001', 18)), "Minting amount exceeds minter cap")
   })
 
 })

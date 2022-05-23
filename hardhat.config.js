@@ -1,6 +1,6 @@
 
 /* global ethers task */
-require('@nomiclabs/hardhat-waffle')
+require("@nomiclabs/hardhat-truffle5");
 require('hardhat-contract-sizer');
 require('@openzeppelin/hardhat-upgrades');
 
