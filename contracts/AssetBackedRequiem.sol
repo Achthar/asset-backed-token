@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.14;
 
-import "./proxy/utils/OwnableUpgradeable.sol";
-import "./proxy/ERC20/ERC20PermitUpgradeable.sol";
-import "./proxy/ERC20/ERC20BurnableUpgradeable.sol";
+import "./upgradeable/utils/OwnableUpgradeable.sol";
+import "./upgradeable/ERC20/ERC20PermitUpgradeable.sol";
+import "./upgradeable/ERC20/ERC20BurnableUpgradeable.sol";
 
 /**
  *  Main token for requiem.finance

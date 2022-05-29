@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import "../proxy/ERC20/ERC20Upgradeable.sol";
-import "../proxy/utils/Initializable.sol";
+import "../upgradeable/ERC20/ERC20Upgradeable.sol";
+import "../upgradeable/utils/Initializable.sol";
 
 // mock class using ERC20
 contract ERC20MockUpgradeable is Initializable, ERC20Upgradeable {
