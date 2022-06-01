@@ -1,7 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
 const { parseUnits } = require('ethers/lib/utils');
-const { getInitializerData } = require('@openzeppelin/hardhat-upgrades/dist/utils');
-
 
 async function main() {
 
@@ -22,16 +20,16 @@ async function main() {
 	console.log("deploy ABREQ")
 	const abREQ = await AssetBackedRequiem.deploy()
 
-	console.log("init ABREQ")
-	await abREQ.initialize(
+	console.log("deploy Proxy")
+	const proxy = await TransparentUpgradeableProxy.deploy(abREQ.address, admin.address, Buffer.from(""))
+
+	console.log("init ABREQ through proxy")
+	await proxy.initialize(
 		"Asset-Backed Requiem", // string memory name_,
 		"ABREQ", // string memory symbol_,
 		parseUnits('1000000', 18) // uint256 _max_total_supply
-
 	);
 
-	console.log("deploy Proxy")
-	const proxy = await TransparentUpgradeableProxy.deploy(abREQ.address, admin.address, Buffer.from(""))
 
 	console.log("abREQ", abREQ.address)
 	console.log("Admin", admin.address)

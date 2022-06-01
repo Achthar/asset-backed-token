@@ -1,6 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
 const { parseUnits } = require('ethers/lib/utils');
-const { getInitializerData } = require('@openzeppelin/hardhat-upgrades/dist/utils');
 
 
 async function main() {
