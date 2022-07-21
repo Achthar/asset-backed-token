@@ -1,5 +1,5 @@
-const { ethers, upgrades } = require('hardhat')
-const { parseUnits } = require('ethers/lib/utils');
+const { ethers } = require("hardhat");
+const ABREQArtifact = require('../artifacts/contracts/AssetBackedRequiem.sol/AssetBackedRequiem.json')
 
 async function main() {
 
@@ -21,13 +21,15 @@ async function main() {
 	const abREQ = await AssetBackedRequiem.deploy()
 
 	console.log("deploy Proxy")
-	const proxy = await TransparentUpgradeableProxy.deploy(abREQ.address, admin.address, Buffer.from(""))
+	const proxy = await TransparentUpgradeableProxy.deploy(abREQ.address, admin.address, "0x")
+
+	const abreqContract = await ethers.getContractAt(ABREQArtifact.abi, proxy.address)
 
 	console.log("init ABREQ through proxy")
-	await proxy.initialize(
+	await abreqContract.initialize(
 		"Asset-Backed Requiem", // string memory name_,
 		"ABREQ", // string memory symbol_,
-		parseUnits('1000000', 18) // uint256 _max_total_supply
+		ethers.utils.parseUnits('1000000', 18) // uint256 _max_total_supply
 	);
 
 
