@@ -1764,7 +1764,7 @@ abstract contract OwnableUpgradeable is Initializable, ContextUpgradeable {
 // File: contracts/AssetBackedRequiem.sol
 
 
-pragma solidity 0.8.15;
+pragma solidity 0.8.17;
 
 
 

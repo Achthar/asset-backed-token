@@ -1,10 +1,138 @@
-// SPDX-License-Identifier: MIT
+
+// File: contracts/interfaces/IOwnable.sol
+
+
+pragma solidity 0.8.17;
+
+interface IOwnable {
+  function owner() external view returns (address);
+
+  function renounceOwnership() external;
+  
+  function transferOwnership( address newOwner_ ) external;
+}
+// File: contracts/libraries/Ownable.sol
+
+
+pragma solidity 0.8.17;
+
+
+contract Ownable is IOwnable {
+    
+  address internal _owner;
+
+  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+  constructor () {
+    _owner = msg.sender;
+    emit OwnershipTransferred( address(0), _owner );
+  }
+
+  function owner() public view override returns (address) {
+    return _owner;
+  }
+
+  modifier onlyOwner() {
+    require( _owner == msg.sender, "Ownable: caller is not the owner" );
+    _;
+  }
+
+  function renounceOwnership() public virtual override onlyOwner() {
+    emit OwnershipTransferred( _owner, address(0) );
+    _owner = address(0);
+  }
+
+  function transferOwnership( address newOwner_ ) public virtual override onlyOwner() {
+    require( newOwner_ != address(0), "Ownable: new owner is the zero address");
+    emit OwnershipTransferred( _owner, newOwner_ );
+    _owner = newOwner_;
+  }
+}
+// File: contracts/libraries/Context.sol
+
+
 
 pragma solidity ^0.8.17;
 
-import "../interfaces/ERC20/IERC20.sol";
-import "../interfaces/ERC20/IERC20Metadata.sol";
-import "./Context.sol";
+/**
+ * @dev Provides information about the current execution context, including the
+ * sender of the transaction and its data. While these are generally available
+ * via msg.sender and msg.data, they should not be accessed in such a direct
+ * manner, since when dealing with meta-transactions the account sending and
+ * paying for execution may not be the actual sender (as far as an application
+ * is concerned).
+ *
+ * This contract is only required for intermediate, library-like contracts.
+ */
+abstract contract Context {
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view virtual returns (bytes calldata) {
+        return msg.data;
+    }
+}
+// File: contracts/interfaces/ERC20/IERC20.sol
+
+
+pragma solidity 0.8.17;
+
+interface IERC20 {
+    function decimals() external view returns (uint8);
+
+    function totalSupply() external view returns (uint256);
+
+    function balanceOf(address account) external view returns (uint256);
+
+    function transfer(address recipient, uint256 amount) external returns (bool);
+
+    function allowance(address owner, address spender) external view returns (uint256);
+
+    function approve(address spender, uint256 amount) external returns (bool);
+
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+}
+// File: contracts/interfaces/ERC20/IERC20Metadata.sol
+
+
+
+pragma solidity ^0.8.17;
+
+
+/**
+ * @dev Interface for the optional metadata functions from the ERC20 standard.
+ *
+ * _Available since v4.1._
+ */
+interface IERC20Metadata is IERC20 {
+    /**
+     * @dev Returns the name of the token.
+     */
+    function name() external view returns (string memory);
+
+    /**
+     * @dev Returns the symbol of the token.
+     */
+    function symbol() external view returns (string memory);
+
+    /**
+     * @dev Returns the decimals places of the token.
+     */
+    function decimals() external view returns (uint8);
+}
+// File: contracts/libraries/ERC20.sol
+
+
+
+pragma solidity ^0.8.17;
+
+
+
 
 /**
  * @dev Implementation of the {IERC20} interface.
@@ -354,4 +482,33 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         address to,
         uint256 amount
     ) internal virtual {}
+}
+
+// File: contracts/test/TWBTC.sol
+
+
+pragma solidity >=0.8.0;
+
+
+
+contract TWBTC is ERC20, Ownable {
+  mapping(address => bool) public minted;
+
+  uint256 mintAmount;
+
+  constructor() ERC20("Wapped Bitcoin Test", "WBTC.T", 8) Ownable() {
+    mintAmount = 1e8;
+  }
+
+  function mint(address to, uint256 value) public virtual {
+    if (_msgSender() == owner()) _mint(to, value);
+    else if (!minted[_msgSender()]) {
+      _mint(to, mintAmount);
+      minted[_msgSender()] = true;
+    } else revert("Already minted");
+  }
+
+  function burn(address from, uint256 value) public virtual onlyOwner {
+    _burn(from, value);
+  }
 }

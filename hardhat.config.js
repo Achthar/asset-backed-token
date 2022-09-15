@@ -40,9 +40,18 @@ module.exports = {
       gas: 800000,
       gasPrice: 250000000000,
     },
+    'thunder-core-testnet': {
+      url: 'https://testnet-rpc.thundercore.com',
+      accounts: [pk1, pk2],
+      chainId: 18,
+      live: true,
+      saveDeployments: true,
+      gas: 2000000,
+      gasPrice: 25000000000,
+    },
   },
   solidity: {
-    compilers: [{ version: '0.8.15' }],
+    compilers: [{ version: '0.8.17' }],
     settings: {
       optimizer: {
         enabled: true,

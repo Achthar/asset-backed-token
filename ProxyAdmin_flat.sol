@@ -2,7 +2,7 @@
 // File: contracts/interfaces/IOwnable.sol
 
 
-pragma solidity 0.8.15;
+pragma solidity 0.8.17;
 
 interface IOwnable {
   function owner() external view returns (address);
@@ -14,7 +14,7 @@ interface IOwnable {
 // File: contracts/libraries/Ownable.sol
 
 
-pragma solidity 0.8.15;
+pragma solidity 0.8.17;
 
 
 contract Ownable is IOwnable {
@@ -160,7 +160,7 @@ library StorageSlot {
 // File: contracts/libraries/Address.sol
 
 
-pragma solidity 0.8.15;
+pragma solidity 0.8.17;
 
 library Address {
   function isContract(address account) internal view returns (bool) {

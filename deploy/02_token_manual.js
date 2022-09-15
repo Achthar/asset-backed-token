@@ -1,9 +1,12 @@
 const { ethers } = require("hardhat");
 const ABREQArtifact = require('../artifacts/contracts/AssetBackedRequiem.sol/AssetBackedRequiem.json')
+const AdminArtifact = require('../artifacts/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json');
+const { addresses } = require("../deployments/addresses");
 
 async function main() {
 
 	const [deployer] = await ethers.getSigners();
+    const chainId = await deployer.getChainId()
 
 	console.log("Deploying contracts with the account:", deployer.address);
 
@@ -14,8 +17,11 @@ async function main() {
 	const TransparentUpgradeableProxy = await ethers.getContractFactory('TransparentUpgradeableProxy')
 	const ProxyAdmin = await ethers.getContractFactory('ProxyAdmin')
 
-	console.log("deploy Admin")
-	const admin = await ProxyAdmin.deploy()
+	// console.log("deploy Admin")
+	// const admin = await ProxyAdmin.deploy()
+
+	console.log("fetch Admin")
+	const admin = await ethers.getContractAt(AdminArtifact.abi, addresses.proxyAdmin[chainId])
 
 	console.log("deploy ABREQ")
 	const abREQ = await AssetBackedRequiem.deploy()
